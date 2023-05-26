@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInput",
+    "maps": [
+        {
+            "name": "Jump",
+            "id": "cff92ce1-c030-4e2e-9ca0-2d308bb20d23",
+            "actions": [
+                {
+                    "name": "Touch",
+                    "type": "Value",
+                    "id": "4c4d4297-eb27-4e91-97e3-162c42e0142b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fc7496e0-c313-40eb-90c7-735d83ac2c3a",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
