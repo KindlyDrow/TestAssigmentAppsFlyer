@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Environment : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private DifficultySetings difficultySetings;
+
+    private void Start()
     {
-        
+        difficultySetings = DifficultySetings.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        transform.position += Vector3.left * Time.deltaTime * difficultySetings.CurSpeed;
+    }
+
+    public void Return()
+    {
+        EnvironmentFactory.Instance.ReturnEnviroment(gameObject);
     }
 }

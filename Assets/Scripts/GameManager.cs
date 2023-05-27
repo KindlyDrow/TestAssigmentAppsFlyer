@@ -1,10 +1,90 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
-    [SerializeField] private float m_speed;
+    public enum State
+    {
+        PreGame,
+        InGame,
+        EndGame,
+    }
+
+    private State m_state;
+
+    public event Action<int> OnScoreChanged;
+
+    public delegate void MyEventHandler(int maxLife, int curLife);
+    public event MyEventHandler OnLifeChanged;
+
+    private int m_curPoints;
+    private int m_maxLifeAmount;
+    private int m_curlifeAmount;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        ChangeState(State.PreGame);
+    }
+
+    public void ChangeState(State state)
+    {
+        switch (state)
+        {
+            case State.PreGame:
+                
+                break;
+            case State.InGame:
+                InitVariables();
+                break;
+            case State.EndGame:
+                break;
+        }
+        EndState();
+        m_state = state;
+    }
+
+    private void EndState()
+    {
+        switch (m_state)
+        {
+            case State.PreGame:
+                break;
+            case State.InGame:
+                break;
+            case State.EndGame:
+                break;
+        }
+    }
+
+    public void GetPoint(int pointValue)
+    {
+        m_curPoints += pointValue;
+        OnScoreChanged?.Invoke(m_curPoints);
+    }
+
+    public void ReceiveDamage()
+    {
+        m_curlifeAmount--;
+        OnLifeChanged?.Invoke(m_maxLifeAmount, m_curlifeAmount);
+        if (m_curlifeAmount < 1)
+        {
+            Debug.Log("ENDGAME!!");
+        }
+        
+    }
+    private void InitVariables()
+    {
+        m_curPoints = 0;
+        m_maxLifeAmount = DifficultySetings.Instance.InitLifeAmount;
+        m_curlifeAmount = m_maxLifeAmount;
+    }
 }
