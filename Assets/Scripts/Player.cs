@@ -24,7 +24,6 @@ public class Player : MonoBehaviour
 
     private void GameInput_OnTouchStarted()
     {
-        if (!GameManager.Instance.IsInGame()) { return; }
         if (isEasyJump) 
         { 
             m_playerRb.velocity = Vector3.zero; 

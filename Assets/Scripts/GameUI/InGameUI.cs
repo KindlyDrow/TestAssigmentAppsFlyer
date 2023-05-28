@@ -15,7 +15,6 @@ public class InGameUI : MonoBehaviour
         m_scoreValueText.text = "0";
         GameManager.Instance.OnScoreChanged += GameManager_OnScoreChanged;
         GameManager.Instance.OnLifeChanged += GameManager_OnLifeChanged;
-        ChangeLifeAmount(GameManager.Instance.GetMaxLife(), GameManager.Instance.GetMaxLife());
     }
 
     private void GameManager_OnLifeChanged(int maxLife, int curLife)

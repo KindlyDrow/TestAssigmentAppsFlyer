@@ -41,12 +41,11 @@ public class DifficultySetings : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        SetDifficulty(Difficulty.Easy);
     }
 
     private void Start()
     {
-        
+        SetDifficulty(Difficulty.Easy);
     }
 
     public void SetDifficulty(Difficulty difficulty)
