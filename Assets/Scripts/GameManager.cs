@@ -17,9 +17,14 @@ public class GameManager : MonoBehaviour
     private State m_state;
 
     public event Action<int> OnScoreChanged;
+    public event Action OnPreGameStarted;
+    public event Action OnInGameStarted;
+    public event Action OnEndGameStarted;
 
     public delegate void MyEventHandler(int maxLife, int curLife);
     public event MyEventHandler OnLifeChanged;
+
+    [SerializeField] private GameObject m_playerGO;
 
     private int m_curPoints;
     private int m_maxLifeAmount;
@@ -40,12 +45,20 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case State.PreGame:
-                
+                Time.timeScale = 0f;
+                OnPreGameStarted?.Invoke();
+                m_playerGO.SetActive(false);
                 break;
             case State.InGame:
+                Time.timeScale = 1f;
+                OnInGameStarted?.Invoke();
                 InitVariables();
+                m_playerGO.SetActive(true);
                 break;
             case State.EndGame:
+                m_playerGO.SetActive(false);
+                Time.timeScale = 0f;
+                OnEndGameStarted?.Invoke();
                 break;
         }
         EndState();
@@ -65,6 +78,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsInGame()
+    {
+        return State.InGame == m_state;
+    }
+
     public void GetPoint(int pointValue)
     {
         m_curPoints += pointValue;
@@ -77,7 +95,7 @@ public class GameManager : MonoBehaviour
         OnLifeChanged?.Invoke(m_maxLifeAmount, m_curlifeAmount);
         if (m_curlifeAmount < 1)
         {
-            Debug.Log("ENDGAME!!");
+            ChangeState(State.EndGame);
         }
         
     }
@@ -86,5 +104,11 @@ public class GameManager : MonoBehaviour
         m_curPoints = 0;
         m_maxLifeAmount = DifficultySetings.Instance.InitLifeAmount;
         m_curlifeAmount = m_maxLifeAmount;
+        OnLifeChanged?.Invoke(m_maxLifeAmount, m_curlifeAmount);
+    }
+
+    public int GetMaxLife()
+    {
+        return m_maxLifeAmount;
     }
 }
