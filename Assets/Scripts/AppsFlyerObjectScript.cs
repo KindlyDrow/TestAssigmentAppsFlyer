@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using AppsFlyerSDK;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
-// This class is intended to be used the the AppsFlyerObject.prefab
-
-public class AppsFlyerObjectScript : MonoBehaviour , IAppsFlyerConversionData
+public class AppsFlyerObjectScript : MonoBehaviour, IAppsFlyerConversionData
 {
     // These fields are set from the editor so do not modify!
     //******************************//
@@ -16,6 +14,8 @@ public class AppsFlyerObjectScript : MonoBehaviour , IAppsFlyerConversionData
     public bool isDebug;
     public bool getConversionData;
     //******************************//
+
+    [SerializeField] private TextMeshProUGUI m_text;
 
     void Start()
     {
@@ -30,31 +30,32 @@ public class AppsFlyerObjectScript : MonoBehaviour , IAppsFlyerConversionData
         AppsFlyer.initSDK(devKey, appID, getConversionData ? this : null);
 #endif
         //******************************/
- 
+
         AppsFlyer.startSDK();
     }
 
-
-    void Update()
+    private void Update()
     {
-        
     }
 
-    // Mark AppsFlyer CallBacks
     public void onConversionDataSuccess(string conversionData)
     {
-        AppsFlyer.AFLog("didReceiveConversionData", conversionData);
+        AppsFlyer.AFLog("onConversionDataSuccess", conversionData);
         Dictionary<string, object> conversionDataDictionary = AppsFlyer.CallbackStringToDictionary(conversionData);
         // add deferred deeplink logic here
+        m_text.text = conversionData;
+        m_text.text += conversionDataDictionary.ToString();
     }
 
     public void onConversionDataFail(string error)
     {
-        AppsFlyer.AFLog("didReceiveConversionDataWithError", error);
+        m_text.text = error;
+        AppsFlyer.AFLog("onConversionDataFail", error);
     }
 
     public void onAppOpenAttribution(string attributionData)
     {
+        m_text.text = attributionData;
         AppsFlyer.AFLog("onAppOpenAttribution", attributionData);
         Dictionary<string, object> attributionDataDictionary = AppsFlyer.CallbackStringToDictionary(attributionData);
         // add direct deeplink logic here
@@ -62,7 +63,7 @@ public class AppsFlyerObjectScript : MonoBehaviour , IAppsFlyerConversionData
 
     public void onAppOpenAttributionFailure(string error)
     {
+        m_text.text = error;
         AppsFlyer.AFLog("onAppOpenAttributionFailure", error);
     }
-
 }

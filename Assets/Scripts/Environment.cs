@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Environment : MonoBehaviour
@@ -12,7 +10,7 @@ public class Environment : MonoBehaviour
         difficultySetings = DifficultySetings.Instance;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.position += Vector3.left * Time.deltaTime * difficultySetings.CurSpeed;
     }
