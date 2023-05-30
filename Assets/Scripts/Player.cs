@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform m_centerOfMassTransform;
     [SerializeField] private float m_jumpForce;
     private bool isEasyJump;
 
@@ -11,7 +10,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         m_playerRb = GetComponent<Rigidbody>();
-        m_playerRb.centerOfMass = Vector3.Scale(m_centerOfMassTransform.localPosition, transform.localScale);
     }
 
     private void Start()
