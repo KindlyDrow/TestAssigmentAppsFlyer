@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Player : MonoBehaviour
     private bool isEasyJump;
 
     private Rigidbody m_playerRb;
+    [Inject] private GameInput gameInput;
+    [Inject] private GameManager gameManager;
 
     private void Awake()
     {
@@ -14,13 +17,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        GameInput.Instance.OnTouchStarted += GameInput_OnTouchStarted;
+        gameInput.OnTouchStarted += GameInput_OnTouchStarted;
         isEasyJump = DifficultySetings.Instance.IsEasyJump;
     }
 
     private void GameInput_OnTouchStarted()
     {
-        if (!GameManager.Instance.IsInGame()) { return; }
+        if (!gameManager.IsInGame()) { return; }
         if (isEasyJump) 
         { 
             m_playerRb.velocity = Vector3.zero; 
@@ -32,12 +35,12 @@ public class Player : MonoBehaviour
     {
         if (other.TryGetComponent<IPointing>(out IPointing pointing))
         {
-            GameManager.Instance.GetPoint(pointing.GetPointValue());
+            gameManager.GetPoint(pointing.GetPointValue());
         }
 
         if (other.TryGetComponent<IDamaging>(out  IDamaging idamaging))
         {
-            GameManager.Instance.ReceiveDamage();
+            gameManager.ReceiveDamage();
         }
     }
 }

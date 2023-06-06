@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class InGameUI : MonoBehaviour
 {
@@ -8,12 +9,14 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private Transform m_lifesAmountContainer;
     [SerializeField] private Transform m_lifesAmountTemplate;
 
+    [Inject] private GameManager gameManager;
+
     private void Start()
     {
         m_scoreValueText.text = "0";
-        GameManager.Instance.OnScoreChanged += GameManager_OnScoreChanged;
-        GameManager.Instance.OnLifeChanged += GameManager_OnLifeChanged;
-        ChangeLifeAmount(GameManager.Instance.GetMaxLife(), GameManager.Instance.GetMaxLife());
+        gameManager.OnScoreChanged += GameManager_OnScoreChanged;
+        gameManager.OnLifeChanged += GameManager_OnLifeChanged;
+        ChangeLifeAmount(gameManager.GetMaxLife(), gameManager.GetMaxLife());
     }
 
     private void GameManager_OnLifeChanged(int maxLife, int curLife)

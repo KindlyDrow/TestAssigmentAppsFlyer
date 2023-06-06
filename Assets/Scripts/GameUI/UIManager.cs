@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,15 +12,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button m_startGameButton;
     [SerializeField] private Button m_restartGameButton;
 
+    [Inject] private GameManager gameManager;
+
     private void Start()
     {
         HideAll();
         m_preGameUI.SetActive(true); 
         m_startGameButton.onClick.AddListener(StartGame);
         m_restartGameButton.onClick.AddListener(ReStartGame);
-        GameManager.Instance.OnPreGameStarted += GameManager_OnPreGameStarted;
-        GameManager.Instance.OnInGameStarted += GameManager_OnInGameStarted;
-        GameManager.Instance.OnEndGameStarted += GameManager_OnEndGameStarted;
+        gameManager.OnPreGameStarted += GameManager_OnPreGameStarted;
+        gameManager.OnInGameStarted += GameManager_OnInGameStarted;
+        gameManager.OnEndGameStarted += GameManager_OnEndGameStarted;
     }
 
     private void GameManager_OnEndGameStarted()
@@ -43,7 +46,7 @@ public class UIManager : MonoBehaviour
     private void StartGame()
     {
         HideAll();
-        GameManager.Instance.ChangeState(GameManager.State.InGame);
+        gameManager.ChangeState(GameManager.State.InGame);
     }
     private void ReStartGame()
     {
